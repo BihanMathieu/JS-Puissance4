@@ -8,7 +8,7 @@ let table = document.createElement('table');
 puissance4();
 
 /**
- * 
+ * Lance la partie
  */
 function puissance4(){
   createTable(6,7)
@@ -33,7 +33,7 @@ function puissance4(){
   }
 
   /**
-   * 
+   * Fait passer les tour et place les jetons
    */
   function game(){
     const td = document.querySelectorAll('td');
@@ -48,7 +48,6 @@ function puissance4(){
           }
         }
         restart()
-        console.log(redToken)
       });
     });
   }
@@ -101,7 +100,7 @@ function verificationColumn(currentPlayer, object, colomnNumber) {
 
 /**
  * Crée un nouveau jeton a partir des coordonnées fourni et lui applique un style
- * @param {*} color la couleur du joueur actuellement en train de jouer
+ * @param {*} color la couleur du joueur
  * @param {*} x coordonées
  * @param {*} y coordonées
  */
@@ -112,6 +111,12 @@ function createPiece(color, x, y) {
 
 }
 
+
+/**
+ * Fonction qui vérifie si il y a victoire
+ * @param {*} tokenArray tableau qui regroupe la position des jetons
+ * @param {*} color couleur du joueur
+ */
 function victoryCheck(tokenArray,color) {
   let concatPositionToken = [];
   for (let i = 0; i < tokenArray.length; i++) {
@@ -123,7 +128,7 @@ function victoryCheck(tokenArray,color) {
       [valeur, valeur - 10, valeur - 20, valeur - 30].every(value => concatPositionToken.includes(value)) ||
       [valeur, valeur - 9, valeur - 18, valeur - 27].every(value => concatPositionToken.includes(value)) ||
       [valeur, valeur + 11, valeur + 22, valeur + 33].every(value => concatPositionToken.includes(value))) {
-        document.getElementById("victory").innerHTML = color+" Victory";
+        document.getElementById("victory").innerHTML = color+" victory !!!";
         victory = true
     }
   }
@@ -144,5 +149,6 @@ function restart(){
     redToken = [];
     yellowToken = [];
     victory = false;
+    document.getElementById("victory").innerHTML = "";
   });
 }
