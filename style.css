@@ -1,0 +1,18 @@
+
+#game table {
+    border: 3px blue outset;
+    background-color: blue;
+    width: 80%;
+    margin: auto;
+
+}
+#game td {
+    width: 150px;
+    height: 150px;
+    margin: 0px;
+    padding: 0px;
+    border: 2px blue inset;
+    border-radius: 100%;
+    background-color: white;
+    cursor: pointer;
+}
