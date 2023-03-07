@@ -33,7 +33,7 @@ function puissance4(){
   }
 
   /**
-   * Fait passer les tour et place les jetons
+   * Fait passer les tours et place les jetons
    */
   function game(){
     const td = document.querySelectorAll('td');
@@ -74,11 +74,11 @@ function gameStage(playerTurn, color, column, tokenArray) {
  * Verifie si il y a deja des jetons dans la colonne.Retourn null si la colonne et rempli
  * Sinon rentre les coordonné du jeton [x,y] le plus haut dans le tableau et retourne le x.
  * @param {*} currentPlayer Le joueur actuellement en trein de jouer
- * @param {*} object le tableau ou seront rentrer les coordonées
+ * @param {*} tokenArray le tableau ou seront rentrer les coordonées
  * @param {*} colomnNumber le numéro de la colonne qui a été jouée
  * @returns 
  */
-function verificationColumn(currentPlayer, object, colomnNumber) {
+function verificationColumn(currentPlayer, tokenArray, colomnNumber) {
   let highestPosition;
   if (yellowToken.concat(redToken).filter(pos => pos[1] === colomnNumber) == 0) {
     highestPosition = [6, colomnNumber]
@@ -90,9 +90,11 @@ function verificationColumn(currentPlayer, object, colomnNumber) {
   if (highestPosition[0] <= 0) {
     console.log("Ne peux pas jouer");
     player = currentPlayer
+    document.getElementById("victory").innerHTML = "La colone est pleine";
     return null
   } else {
-    object.push([highestPosition[0] - 1, colomnNumber]);
+    tokenArray.push([highestPosition[0] - 1, colomnNumber]);
+    document.getElementById("victory").innerHTML = "";
     return highestPosition[0] - 1
   }
 }
@@ -111,25 +113,22 @@ function createPiece(color, x, y) {
 
 }
 
-
 /**
  * Fonction qui vérifie si il y a victoire
  * @param {*} tokenArray tableau qui regroupe la position des jetons
  * @param {*} color couleur du joueur
  */
-function victoryCheck(tokenArray,color) {
-  let concatPositionToken = [];
-  for (let i = 0; i < tokenArray.length; i++) {
-    concatPositionToken.push(((10 * tokenArray[i][0]) + tokenArray[i][1]))
-  }
-  for (let i = 0; i < concatPositionToken.length; i++) {
-    let valeur = concatPositionToken[i]
-    if ([valeur, valeur + 1, valeur + 2, valeur + 3].every(value => concatPositionToken.includes(value)) ||
-      [valeur, valeur - 10, valeur - 20, valeur - 30].every(value => concatPositionToken.includes(value)) ||
-      [valeur, valeur - 9, valeur - 18, valeur - 27].every(value => concatPositionToken.includes(value)) ||
-      [valeur, valeur + 11, valeur + 22, valeur + 33].every(value => concatPositionToken.includes(value))) {
-        document.getElementById("victory").innerHTML = color+" victory !!!";
-        victory = true
+function victoryCheck(tokenArray, color) {
+  const positions = tokenArray.map(([x, y]) => x * 10 + y);
+  const checkers = [1, 10, 9, 11];
+
+  for (const position of positions) {
+    for (const direction of checkers) {
+      const values = Array.from({ length: 4 }, (_, i) => position + i * direction);
+      if (values.every((value) => positions.includes(value))) {
+        document.getElementById("victory").innerHTML = `${color} victory !!!`;
+        victory = true;
+      }
     }
   }
 }
